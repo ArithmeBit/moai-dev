@@ -28,6 +28,7 @@ namespace InputSensorID {
 		MOUSE_MIDDLE,
 		MOUSE_RIGHT,
 		TOUCH,
+		WHEEL,
 		TOTAL,
 	};
 }
@@ -112,6 +113,7 @@ void Init ( int argc, char** argv ) {
 	AKUSetInputDeviceButton			( InputDeviceID::DEVICE, InputSensorID::MOUSE_LEFT,		"mouseLeft" );
 	AKUSetInputDeviceButton			( InputDeviceID::DEVICE, InputSensorID::MOUSE_MIDDLE,	"mouseMiddle" );
 	AKUSetInputDeviceButton			( InputDeviceID::DEVICE, InputSensorID::MOUSE_RIGHT,	"mouseRight" );
+	AKUSetInputDeviceWheel			( InputDeviceID::DEVICE, InputSensorID::WHEEL, 			"wheel" );
 
 	AKUSetFunc_EnterFullscreenMode ( _AKUEnterFullscreenModeFunc );
 	AKUSetFunc_ExitFullscreenMode ( _AKUExitFullscreenModeFunc );
@@ -173,6 +175,11 @@ void MainLoop () {
 				case SDL_MOUSEMOTION:
 				
 					AKUEnqueuePointerEvent ( InputDeviceID::DEVICE, InputSensorID::POINTER, sdlEvent.motion.x, sdlEvent.motion.y );
+					break;
+					
+				case SDL_MOUSEWHEEL:
+					
+					AKUEnqueueWheelEvent ( InputDeviceID::DEVICE, InputSensorID::WHEEL, sdlEvent.wheel.y ); // Note: we are ignoring the x wheel event
 					break;
 			}
 		}
