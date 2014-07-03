@@ -45,13 +45,13 @@ void	_AKUOpenWindowFunc				( const char* title, int width, int height );
 //----------------------------------------------------------------//
 void _AKUEnterFullscreenModeFunc () {
 
-	printf ( "UNSUPPORTED\n" );
+	SDL_SetWindowFullscreen(sWindow, SDL_WINDOW_FULLSCREEN);
 }
 
 //----------------------------------------------------------------//
 void _AKUExitFullscreenModeFunc () {
 
-	printf ( "UNSUPPORTED\n" );
+	SDL_SetWindowFullscreen(sWindow, 0);
 }
 
 //----------------------------------------------------------------//
