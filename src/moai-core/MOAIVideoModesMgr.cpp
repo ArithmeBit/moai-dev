@@ -26,7 +26,7 @@ int MOAIVideoModesMgr::_GetNumDisplayModes ( lua_State* L ) {
 int MOAIVideoModesMgr::_GetDisplayMode ( lua_State* L ) {
 
 	MOAILuaState state ( L );
-	unsigned int mode = (unsigned int)state.GetValue ( 1, 0 );
+	unsigned int mode = (unsigned int)state.GetValue ( 1, 1 ) - 1;
 
 	if(mode > s_videoModes.size())
 		return 0;
