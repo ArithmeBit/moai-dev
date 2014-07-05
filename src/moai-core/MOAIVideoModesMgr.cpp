@@ -5,7 +5,7 @@
 #include <moai-sim/MOAISim.h>
 
 std::vector<MOAIVideoModesMgr::Mode> MOAIVideoModesMgr::s_videoModes;
-unsigned int MOAIVideoModesMgr::s_currentMode = -1;
+u32 MOAIVideoModesMgr::s_currentMode = -1;
 MOAIVideoModesMgr::SetWindowModeFuncCallback MOAIVideoModesMgr::s_setWindowModeFunc = NULL;
 
 //================================================================//
@@ -29,7 +29,7 @@ int MOAIVideoModesMgr::_GetNumDisplayModes ( lua_State* L ) {
 int MOAIVideoModesMgr::_GetDisplayMode ( lua_State* L ) {
 
 	MOAILuaState state ( L );
-	unsigned int mode = (unsigned int)state.GetValue ( 1, 1 ) - 1;
+	u32 mode = state.GetValue < u32 >( 1, 1 ) - 1;
 
 	if(mode >= s_videoModes.size())
 		return 0;
@@ -44,7 +44,7 @@ int MOAIVideoModesMgr::_GetDisplayMode ( lua_State* L ) {
 int MOAIVideoModesMgr::_SetDisplayMode( lua_State* L) {
 
 	MOAILuaState state ( L );
-	unsigned int mode = (unsigned int)state.GetValue ( 1, 1 ) - 1;
+	u32 mode = state.GetValue <u32> ( 1, 1 ) - 1;
 
 	if((s_setWindowModeFunc != NULL) &&
 	   (mode < s_videoModes.size())  &&

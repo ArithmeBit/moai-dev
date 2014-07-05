@@ -37,7 +37,7 @@ private:
 	static int		_GetDisplayMode			( lua_State* L );
 	static int		_SetDisplayMode			( lua_State* L );
 	static std::vector<Mode> s_videoModes;
-	static unsigned int s_currentMode;
+	static u32 s_currentMode;
 	static SetWindowModeFuncCallback s_setWindowModeFunc;
 
 public:
