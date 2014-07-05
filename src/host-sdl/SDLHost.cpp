@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include <moai-core/MOAIVideoModesMgr.h>
 #include <moai-core/host.h>
 #include <host-modules/aku_modules.h>
 #include <host-sdl/SDLHost.h>
@@ -70,11 +71,32 @@ void _AKUOpenWindowFunc ( const char* title, int width, int height ) {
 //================================================================//
 // helpers
 //================================================================//
-
+static void QueryVideoModes		();
 static void	Finalize			();
 static void	Init				( int argc, char** argv );
 static void	MainLoop			();
 static void	PrintMoaiVersion	();
+
+//----------------------------------------------------------------//
+void QueryVideoModes()
+{
+	int videoDisplays = SDL_GetNumVideoDisplays();
+
+	// Loop over all the monitors
+	for(int i = 0; i < videoDisplays; ++i)
+	{
+		// Loop over all the modes for the current monitor
+		int numDisplayModes = SDL_GetNumDisplayModes(i);
+
+		for(int j = 0; j < numDisplayModes; ++j)
+		{
+			SDL_DisplayMode mode;
+			SDL_GetDisplayMode(i, j, &mode);
+
+			MOAIVideoModesMgr::Get().AddDisplayMode(mode.w, mode.h);
+		}
+	}
+}
 
 //----------------------------------------------------------------//
 void Finalize () {
@@ -104,6 +126,7 @@ void Init ( int argc, char** argv ) {
 
 	AKUSetInputConfigurationName ( "SDL" );
 
+	QueryVideoModes();
 	AKUReserveInputDevices			( InputDeviceID::TOTAL );
 	AKUSetInputDevice				( InputDeviceID::DEVICE, "device" );
 	

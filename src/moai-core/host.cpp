@@ -5,6 +5,7 @@
 #include <moai-core/host.h>
 #include <moai-core/headers.h>
 #include <moai-util/MOAIDataBuffer.h>
+#include <moai-core/MOAIVideoModesMgr.h>
 
 //================================================================//
 // AKUContext
@@ -120,6 +121,7 @@ AKUContextID AKUCreateContext () {
 	REGISTER_LUA_CLASS ( MOAIDeserializer )
 	REGISTER_LUA_CLASS ( MOAILogMgr )
 	REGISTER_LUA_CLASS ( MOAISerializer )
+	REGISTER_LUA_CLASS ( MOAIVideoModesMgr )
 
 	return sContextIDCounter;
 }
