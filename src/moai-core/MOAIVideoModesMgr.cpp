@@ -3,11 +3,12 @@
 
 #include <moai-core/MOAIVideoModesMgr.h>
 
+std::vector<MOAIVideoModesMgr::Mode> MOAIVideoModesMgr::s_videoModes;
+MOAIVideoModesMgr::SetWindowModeFuncCallback MOAIVideoModesMgr::s_setWindowModeFunc = NULL;
+
 //================================================================//
 // lua
 //================================================================//
-
-std::vector<MOAIVideoModesMgr::Mode> MOAIVideoModesMgr::s_videoModes;
 
 //----------------------------------------------------------------//
 /**	@name	singletonHello
@@ -36,6 +37,22 @@ int MOAIVideoModesMgr::_GetDisplayMode ( lua_State* L ) {
 	lua_pushnumber ( L, s_videoModes[mode].rate );
 
 	return 3;
+}
+
+int MOAIVideoModesMgr::_SetDisplayMode( lua_State* L) {
+
+	MOAILuaState state ( L );
+	unsigned int mode = (unsigned int)state.GetValue ( 1, 1 ) - 1;
+
+	if(mode < s_videoModes.size())
+	{
+		if(s_setWindowModeFunc != NULL)
+		{
+			s_setWindowModeFunc(s_videoModes[mode]);
+		}
+	}
+
+	return 0;
 }
 
 //================================================================//
@@ -72,6 +89,7 @@ void MOAIVideoModesMgr::RegisterLuaClass ( MOAILuaState& state ) {
 	luaL_Reg regTable [] = {
 		{ "GetNumDisplayModes", _GetNumDisplayModes },
 		{ "GetDisplayMode", _GetDisplayMode },
+		{ "SetDisplayMode", _SetDisplayMode },
 		{ NULL, NULL }
 	};
 
@@ -87,4 +105,9 @@ void MOAIVideoModesMgr::AddDisplayMode(int width, int height, int rate)
 {
 	Mode m = {width, height, rate};
 	s_videoModes.push_back(m);
+}
+
+void MOAIVideoModesMgr::SetWindowModeFunc(SetWindowModeFuncCallback func)
+{
+	s_setWindowModeFunc = func;
 }

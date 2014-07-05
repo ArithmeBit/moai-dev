@@ -18,7 +18,7 @@
 */
 class MOAIVideoModesMgr :
 	public MOAIGlobalClass < MOAIVideoModesMgr, MOAILuaObject > {
-private:
+public:
 
 	struct Mode
 	{
@@ -27,11 +27,17 @@ private:
 		int rate;
 		// todo: add more
 	};
+
+	typedef void ( *SetWindowModeFuncCallback )(const Mode& mode);
+
+private:
 	
 	//----------------------------------------------------------------//
 	static int		_GetNumDisplayModes		( lua_State* L );
 	static int		_GetDisplayMode			( lua_State* L );
+	static int		_SetDisplayMode			( lua_State* L );
 	static std::vector<Mode> s_videoModes;
+	static SetWindowModeFuncCallback s_setWindowModeFunc;
 
 public:
 	
@@ -43,6 +49,7 @@ public:
 	void			RegisterLuaClass	( MOAILuaState& state );
 	void 			ClearDisplayModes();
 	void 			AddDisplayMode(int width, int height, int rate);
+	void 			SetWindowModeFunc(SetWindowModeFuncCallback func);
 };
 
 #endif

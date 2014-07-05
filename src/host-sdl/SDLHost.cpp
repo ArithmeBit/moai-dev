@@ -56,6 +56,33 @@ void _AKUExitFullscreenModeFunc () {
 	SDL_SetWindowFullscreen(sWindow, 0);
 }
 
+void _AKUSetWindowDisplayMode(const MOAIVideoModesMgr::Mode& mode) {
+
+	bool bFullscreen = SDL_GetWindowFlags(sWindow) & SDL_WINDOW_FULLSCREEN;
+
+	if (bFullscreen)
+	{
+		SDL_DisplayMode sdlDisplayMode;
+		sdlDisplayMode.format = SDL_GetWindowPixelFormat(sWindow);
+		sdlDisplayMode.w = mode.width;
+		sdlDisplayMode.h = mode.height;
+		sdlDisplayMode.refresh_rate = mode.rate;
+		sdlDisplayMode.driverdata = 0;
+		
+		_AKUExitFullscreenModeFunc();
+		SDL_SetWindowDisplayMode(sWindow, &sdlDisplayMode);
+		_AKUEnterFullscreenModeFunc();
+	}
+	else
+	{
+		SDL_SetWindowSize(sWindow, mode.width, mode.height);
+	}
+
+	// TODO: this lines need changing?
+	AKUSetScreenSize(mode.width, mode.height);
+	AKUSetViewSize(mode.width, mode.height); 
+}
+
 //----------------------------------------------------------------//
 void _AKUOpenWindowFunc ( const char* title, int width, int height ) {
 	
@@ -126,7 +153,9 @@ void Init ( int argc, char** argv ) {
 
 	AKUSetInputConfigurationName ( "SDL" );
 
+	MOAIVideoModesMgr::Get().SetWindowModeFunc(_AKUSetWindowDisplayMode);
 	QueryVideoModes();
+
 	AKUReserveInputDevices			( InputDeviceID::TOTAL );
 	AKUSetInputDevice				( InputDeviceID::DEVICE, "device" );
 	
