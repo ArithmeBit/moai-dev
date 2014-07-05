@@ -2,6 +2,7 @@
 // http://getmoai.com
 
 #include <moai-core/MOAIVideoModesMgr.h>
+#include <moai-sim/MOAISim.h>
 
 std::vector<MOAIVideoModesMgr::Mode> MOAIVideoModesMgr::s_videoModes;
 unsigned int MOAIVideoModesMgr::s_currentMode = -1;
@@ -50,6 +51,9 @@ int MOAIVideoModesMgr::_SetDisplayMode( lua_State* L) {
 	   (s_currentMode != mode))
 	{
 		s_setWindowModeFunc(s_videoModes[mode]);
+
+		MOAISim::Get().SetStep(1.0 / s_videoModes[mode].rate);
+
 		s_currentMode = mode;
 	}
 
