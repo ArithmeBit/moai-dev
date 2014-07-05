@@ -42,6 +42,8 @@ static SDL_Window* sWindow = 0;
 
 void	_AKUEnterFullscreenModeFunc		();
 void	_AKUExitFullscreenModeFunc		();
+void 	_AKUSetWindowDisplayMode		(const MOAIVideoModesMgr::Mode& mode);
+void 	_AKUResizeWindow				(int width, int height);
 void	_AKUOpenWindowFunc				( const char* title, int width, int height, bool borderlessWindow );
 
 //----------------------------------------------------------------//
@@ -78,21 +80,31 @@ void _AKUSetWindowDisplayMode(const MOAIVideoModesMgr::Mode& mode) {
 		SDL_SetWindowSize(sWindow, mode.width, mode.height);
 	}
 
-	// TODO: this lines need changing?
-	AKUSetScreenSize(mode.width, mode.height);
-	AKUSetViewSize(mode.width, mode.height); 
+	_AKUResizeWindow(mode.width, mode.height);
+}
+
+void _AKUResizeWindow(int width, int height) {
+
+	AKUSetScreenSize(width, height);
+	AKUSetViewSize(width, height);
 }
 
 //----------------------------------------------------------------//
 void _AKUOpenWindowFunc ( const char* title, int width, int height, bool borderlessWindow ) {
 	
 	if ( !sWindow ) {
+
+		Uint32 flags = SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN;
+
 		if ( borderlessWindow ) {
-			sWindow = SDL_CreateWindow ( title, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN | SDL_WINDOW_BORDERLESS);
+			flags |= SDL_WINDOW_BORDERLESS;
 		}
 		else {
-			sWindow = SDL_CreateWindow ( title, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
+			flags |= SDL_WINDOW_RESIZABLE;
 		}
+
+		sWindow = SDL_CreateWindow ( title, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, flags);
+
 		SDL_GL_CreateContext ( sWindow );
 		SDL_GL_SetSwapInterval ( 1 );
 		AKUDetectGfxContext ();
@@ -249,8 +261,7 @@ void MainLoop () {
 								
 								int w, h;
 								SDL_GetWindowSize(sWindow, &w, &h);
-								AKUSetScreenSize ( w, h );
-								AKUSetViewSize ( w, h );
+								_AKUResizeWindow( w, h );
 								break;
 						}
 					}
