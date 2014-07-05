@@ -235,9 +235,28 @@ void MainLoop () {
 					break;
 					
 				case SDL_MOUSEWHEEL:
-					
+
 					AKUEnqueueWheelEvent ( InputDeviceID::DEVICE, InputSensorID::WHEEL, sdlEvent.wheel.y ); // Note: we are ignoring the x wheel event
 					break;
+
+				case SDL_WINDOWEVENT:
+
+					if ( sdlEvent.window.windowID == SDL_GetWindowID(sWindow)) {
+						
+						switch ( sdlEvent.window.event) {
+							
+							case SDL_WINDOWEVENT_RESIZED:
+								
+								int w, h;
+								SDL_GetWindowSize(sWindow, &w, &h);
+								AKUSetScreenSize ( w, h );
+								AKUSetViewSize ( w, h );
+								break;
+						}
+					}
+					break;
+
+				
 			}
 		}
 		
