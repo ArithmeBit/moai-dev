@@ -24,6 +24,7 @@ private:
 	{
 		int width;
 		int height;
+		int rate;
 		// todo: add more
 	};
 	
@@ -41,7 +42,7 @@ public:
 					~MOAIVideoModesMgr			();
 	void			RegisterLuaClass	( MOAILuaState& state );
 	void 			ClearDisplayModes();
-	void 			AddDisplayMode(int width, int height);
+	void 			AddDisplayMode(int width, int height, int rate);
 };
 
 #endif

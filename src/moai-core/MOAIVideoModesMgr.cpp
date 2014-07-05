@@ -33,8 +33,9 @@ int MOAIVideoModesMgr::_GetDisplayMode ( lua_State* L ) {
 
 	lua_pushnumber ( L, s_videoModes[mode].width );
 	lua_pushnumber ( L, s_videoModes[mode].height );
+	lua_pushnumber ( L, s_videoModes[mode].rate );
 
-	return 2;
+	return 3;
 }
 
 //================================================================//
@@ -82,8 +83,8 @@ void MOAIVideoModesMgr::ClearDisplayModes()
 	s_videoModes.clear();
 }
 
-void MOAIVideoModesMgr::AddDisplayMode(int width, int height)
+void MOAIVideoModesMgr::AddDisplayMode(int width, int height, int rate)
 {
-	Mode m = {width, height};
+	Mode m = {width, height, rate};
 	s_videoModes.push_back(m);
 }

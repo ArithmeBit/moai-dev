@@ -93,7 +93,7 @@ void QueryVideoModes()
 			SDL_DisplayMode mode;
 			SDL_GetDisplayMode(i, j, &mode);
 
-			MOAIVideoModesMgr::Get().AddDisplayMode(mode.w, mode.h);
+			MOAIVideoModesMgr::Get().AddDisplayMode(mode.w, mode.h, mode.refresh_rate);
 		}
 	}
 }
