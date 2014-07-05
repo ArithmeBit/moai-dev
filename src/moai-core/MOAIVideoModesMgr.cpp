@@ -45,17 +45,12 @@ int MOAIVideoModesMgr::_SetDisplayMode( lua_State* L) {
 	MOAILuaState state ( L );
 	unsigned int mode = (unsigned int)state.GetValue ( 1, 1 ) - 1;
 
-	if(s_setWindowModeFunc != NULL)
+	if((s_setWindowModeFunc != NULL) &&
+	   (mode < s_videoModes.size())  &&
+	   (s_currentMode != mode))
 	{
-		if(s_currentMode != mode)
-		{
-			s_currentMode = mode;
-
-			if(mode < s_videoModes.size())
-			{
-				s_setWindowModeFunc(s_videoModes[mode]);
-			}
-		}	
+		s_setWindowModeFunc(s_videoModes[mode]);
+		s_currentMode = mode;
 	}
 
 	return 0;
