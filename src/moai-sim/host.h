@@ -19,7 +19,7 @@ typedef void ( *AKUEnterFullscreenModeFunc )	();
 typedef void ( *AKUExitFullscreenModeFunc )		();
 typedef void ( *AKUShowCursorFunc )				();
 typedef void ( *AKUHideCursorFunc )				();
-typedef void ( *AKUOpenWindowFunc )				( const char* title, int width, int height );
+typedef void ( *AKUOpenWindowFunc )				( const char* title, int width, int height, bool borderlessWindow );
 typedef void ( *AKUSetSimStepFunc )				( double step );
 
 // setup

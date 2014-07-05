@@ -42,7 +42,7 @@ static SDL_Window* sWindow = 0;
 
 void	_AKUEnterFullscreenModeFunc		();
 void	_AKUExitFullscreenModeFunc		();
-void	_AKUOpenWindowFunc				( const char* title, int width, int height );
+void	_AKUOpenWindowFunc				( const char* title, int width, int height, bool borderlessWindow );
 
 //----------------------------------------------------------------//
 void _AKUEnterFullscreenModeFunc () {
@@ -84,10 +84,15 @@ void _AKUSetWindowDisplayMode(const MOAIVideoModesMgr::Mode& mode) {
 }
 
 //----------------------------------------------------------------//
-void _AKUOpenWindowFunc ( const char* title, int width, int height ) {
+void _AKUOpenWindowFunc ( const char* title, int width, int height, bool borderlessWindow ) {
 	
 	if ( !sWindow ) {
-		sWindow = SDL_CreateWindow ( title, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN );
+		if ( borderlessWindow ) {
+			sWindow = SDL_CreateWindow ( title, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN | SDL_WINDOW_BORDERLESS);
+		}
+		else {
+			sWindow = SDL_CreateWindow ( title, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
+		}
 		SDL_GL_CreateContext ( sWindow );
 		SDL_GL_SetSwapInterval ( 1 );
 		AKUDetectGfxContext ();

@@ -46,7 +46,7 @@ public:
 	typedef void ( *ExitFullscreenModeFunc )		();
 	typedef void ( *ShowCursorFunc )				();
 	typedef void ( *HideCursorFunc )				();
-	typedef void ( *OpenWindowFunc )				( const char* title, int width, int height );
+	typedef void ( *OpenWindowFunc )				( const char* title, int width, int height, bool borderlessWindow );
 	typedef void ( *SetSimStepFunc )				( double step );
 
 private:

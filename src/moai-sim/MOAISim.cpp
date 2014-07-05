@@ -380,11 +380,12 @@ int MOAISim::_openWindow ( lua_State* L ) {
 	cc8* title = lua_tostring ( state, 1 );
 	u32 width = state.GetValue < u32 >( 2, 320 );
 	u32 height = state.GetValue < u32 >( 3, 480 );
+	bool borderlessWindow = state.GetValue < bool >( 4, false );
 
 	OpenWindowFunc openWindow = MOAISim::Get ().GetOpenWindowFunc ();
 	if ( openWindow ) {
 		MOAIGfxDevice::Get ().SetBufferSize ( width, height );
-		openWindow ( title, width, height );
+		openWindow ( title, width, height, borderlessWindow );
 	}
 
 	return 0;
