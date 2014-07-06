@@ -674,7 +674,8 @@ int MOAISim::_timeToFrames ( lua_State* L ) {
 */
 int MOAISim::_openURL ( lua_State* L ) {
 
-	std::string url = lua_tostring(L, 1);
+	MOAILuaState state ( L );
+	std::string url = state.GetValue( 1, "" );
 
 	#if defined( MOAI_OS_WINDOWS )
 		ShellExecute(0, "open", url.c_str(), 0, 0, 1);
