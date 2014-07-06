@@ -664,6 +664,30 @@ int MOAISim::_timeToFrames ( lua_State* L ) {
 	return 1;
 }
 
+// TODO: test on Linux/Mac. Maybe move to MOAIApp like the Android/iOS openURLs?
+//----------------------------------------------------------------//
+/**	@name	openURL
+	@text	opens the
+
+	@in		string url		the url to open in the default web browser
+	@out	nil
+*/
+int MOAISim::_openURL ( lua_State* L ) {
+
+	std::string url = lua_tostring(L, 1);
+
+	#if defined( MOAI_OS_WINDOWS )
+		ShellExecute(0, "open", url.c_str(), 0, 0, 1);
+	#elif defined( MOAI_OS_LINUX )
+		system(("xdg-open " + url).c_str());
+	#elif defined ( MOAI_OS_OSX )
+		system(("open " + url).c_str());
+	#else
+		printf("ERROR: unknown OS to open link in.");
+	#endif
+	return 0;
+}
+
 //================================================================//
 // DOXYGEN
 //================================================================//
@@ -866,6 +890,7 @@ void MOAISim::RegisterLuaClass ( MOAILuaState& state ) {
 		{ "setTraceback",				_setTraceback },
 		{ "showCursor",					_showCursor },
 		{ "timeToFrames",				_timeToFrames },
+		{ "openURL",					_openURL },
 		{ NULL, NULL }
 	};
 
