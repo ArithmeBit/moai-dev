@@ -113,6 +113,8 @@ private:
 	float mEmissionRate;
 	
 	//----------------------------------------------------------------//
+	static int		_setGravity			( lua_State* L );
+	static int  	_getGravity			( lua_State* L );
 	static int		_getBlendMode		( lua_State* L );
 	static int		_getDuration		( lua_State* L );
 	static int		_getEmission		( lua_State* L );

@@ -35,6 +35,24 @@
 // lua
 //================================================================//
 
+int	MOAIParticlePexPlugin::_setGravity( lua_State* L ){
+	MOAI_LUA_SETUP ( MOAIParticlePexPlugin, "U" )
+	
+	self->mGravity[0] = state.GetValue < float >(2, self->mGravity[0]);
+	self->mGravity[1] = state.GetValue < float >(1, self->mGravity[1]);
+	
+	return 0;
+}
+
+int	MOAIParticlePexPlugin::_getGravity( lua_State* L ){
+	MOAI_LUA_SETUP ( MOAIParticlePexPlugin, "U" )
+	
+	lua_pushnumber ( state, self->mGravity[0] );
+	lua_pushnumber ( state, self->mGravity[1] );
+	
+	return 2;
+}
+
 int	MOAIParticlePexPlugin::_getBlendMode( lua_State* L ){
 	MOAI_LUA_SETUP ( MOAIParticlePexPlugin, "U" )
 	
@@ -666,6 +684,8 @@ void MOAIParticlePexPlugin::RegisterLuaFuncs ( MOAILuaState& state ) {
 	MOAIParticlePlugin::RegisterLuaFuncs ( state );
 
 	luaL_Reg regTable[] = {
+		{ "setGravity",			_setGravity },
+		{ "getGravity",			_getGravity },
 		{ "getBlendMode",		_getBlendMode },
 		{ "getDuration",		_getDuration },
 		{ "getEmission",		_getEmission },
