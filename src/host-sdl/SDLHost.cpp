@@ -24,12 +24,13 @@ namespace InputDeviceID {
 namespace InputSensorID {
 	enum {
 		KEYBOARD,
+		TEXT_INPUT,
 		POINTER,
 		MOUSE_LEFT,
 		MOUSE_MIDDLE,
 		MOUSE_RIGHT,
 		TOUCH,
-		WHEEL,
+		MOUSE_WHEEL,
 		TOTAL,
 	};
 }
@@ -155,9 +156,9 @@ void Finalize () {
 void Init ( int argc, char** argv ) {
 
 	SDL_Init ( SDL_INIT_EVERYTHING );
-	PrintMoaiVersion ();
 
 	#ifdef _DEBUG
+		PrintMoaiVersion ();
 		printf ( "DEBUG BUILD\n" );
 	#endif
 
@@ -178,11 +179,12 @@ void Init ( int argc, char** argv ) {
 	
 	AKUReserveInputDeviceSensors	( InputDeviceID::DEVICE, InputSensorID::TOTAL );
 	AKUSetInputDeviceKeyboard		( InputDeviceID::DEVICE, InputSensorID::KEYBOARD,		"keyboard" );
+	AKUSetInputDeviceKeyboard		( InputDeviceID::DEVICE, InputSensorID::TEXT_INPUT,		"textInput" );
 	AKUSetInputDevicePointer		( InputDeviceID::DEVICE, InputSensorID::POINTER,		"pointer" );
 	AKUSetInputDeviceButton			( InputDeviceID::DEVICE, InputSensorID::MOUSE_LEFT,		"mouseLeft" );
 	AKUSetInputDeviceButton			( InputDeviceID::DEVICE, InputSensorID::MOUSE_MIDDLE,	"mouseMiddle" );
 	AKUSetInputDeviceButton			( InputDeviceID::DEVICE, InputSensorID::MOUSE_RIGHT,	"mouseRight" );
-	AKUSetInputDeviceWheel			( InputDeviceID::DEVICE, InputSensorID::WHEEL, 			"wheel" );
+	AKUSetInputDeviceWheel			( InputDeviceID::DEVICE, InputSensorID::MOUSE_WHEEL,	"mouseWheel" );
 
 	AKUSetFunc_EnterFullscreenMode ( _AKUEnterFullscreenModeFunc );
 	AKUSetFunc_ExitFullscreenMode ( _AKUExitFullscreenModeFunc );
@@ -220,6 +222,10 @@ void MainLoop () {
 					AKUEnqueueKeyboardEvent ( InputDeviceID::DEVICE, InputSensorID::KEYBOARD, key, sdlEvent.key.type == SDL_KEYDOWN );
 
 				} 	break;
+
+				case SDL_TEXTINPUT:
+					AKUEnqueueKeyboardEvent ( InputDeviceID::DEVICE, InputSensorID::TEXT_INPUT, (int)sdlEvent.text.text[0], false );
+					break;
 					
 				case SDL_MOUSEBUTTONDOWN:
 				case SDL_MOUSEBUTTONUP:
@@ -248,7 +254,7 @@ void MainLoop () {
 					
 				case SDL_MOUSEWHEEL:
 
-					AKUEnqueueWheelEvent ( InputDeviceID::DEVICE, InputSensorID::WHEEL, sdlEvent.wheel.y ); // Note: we are ignoring the x wheel event
+					AKUEnqueueWheelEvent ( InputDeviceID::DEVICE, InputSensorID::MOUSE_WHEEL, sdlEvent.wheel.y ); // Note: we are ignoring the x wheel event
 					break;
 
 				case SDL_WINDOWEVENT:
