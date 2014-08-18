@@ -79,6 +79,7 @@ void _AKUSetWindowDisplayMode(const MOAIVideoModesMgr::Mode& mode) {
 	else
 	{
 		SDL_SetWindowSize(sWindow, mode.width, mode.height);
+		SDL_SetWindowPosition(sWindow, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
 	}
 
 	_AKUResizeWindow(mode.width, mode.height);
